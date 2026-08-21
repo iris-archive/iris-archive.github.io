@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publications | IRIS Lab</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable.css" />
+    <style>
+        :root {
+            --primary-color: #000000;
+            --accent-color: #2563eb;
+            --bg-color: #f9fafb;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --header-height: 72px;
+            --subnav-height: 54px;
+        }
+        html { scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Pretendard Variable', sans-serif; 
+            color: var(--text-main); 
+            line-height: 1.6;
+            
+            /* 페이지 슬라이드 애니메이션 */
+            opacity: 0; 
+            transform: translateX(30px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            overflow-x: hidden; 
+        }
+        body.page-loaded { opacity: 1; transform: translateX(0); }
+        body.page-exit { opacity: 0; transform: translateX(-30px); }
+
+        a { text-decoration: none; color: inherit; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+
+        header {
+            position: sticky; 
+            top: 0; 
+            left: 0; 
+            right: 0;
+            background: rgba(255, 255, 255, 0.9); 
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #eaeaea; 
+            z-index: 1000; 
+            height: var(--header-height);
+        }
+        .nav-inner { display: flex; justify-content: space-between; align-items: center; height: 100%; }
+        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.03em; }
+        .logo span { color: var(--accent-color); }
+        .nav-links { display: flex; gap: 2rem; font-weight: 600; font-size: 1rem; }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent-color); transition: color 0.2s; }
+        .nav-links a.active { color: var(--accent-color); }
+
+        .sub-nav {
+            position: sticky; 
+            top: var(--header-height); 
+            left: 0; 
+            right: 0;
+            background: white; 
+            border-bottom: 1px solid #eaeaea; 
+            z-index: 990;
+            height: var(--subnav-height); 
+            display: flex; 
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .sub-nav-links { display: flex; gap: 2rem; font-size: 0.95rem; font-weight: 500; overflow-x: auto; white-space: nowrap; }
+        .sub-nav-links a:hover { color: var(--accent-color); }
+
+        .page-header {
+            padding-top: calc(var(--header-height) + var(--subnav-height) + 80px);
+            padding-bottom: 40px; 
+            background-color: var(--bg-color); 
+            text-align: center;
+        }
+        .page-header h1 { font-size: 3rem; font-weight: 800; margin-bottom: 1rem; }
+        .page-header p { color: var(--text-muted); font-size: 1.125rem; }
+
+        /* section 대신 section.container로 우선순위를 높여 상하 여백을 강제 적용합니다 */
+        section.container { 
+            padding-top: 80px;    /* 위쪽 여백 */
+            padding-bottom: 60px; /* 아래쪽 여백 */
+            scroll-margin-top: calc(var(--header-height) + var(--subnav-height)); 
+        }
+        section.container + section.container {
+            border-top: 1px solid #eaeaea;
+        }
+        .section-title { 
+            font-size: 2rem; 
+            font-weight: 700; 
+            margin-bottom: 2.5rem; 
+            border-bottom: 2px solid var(--primary-color); 
+            display: inline-block; 
+            padding-bottom: 8px;
+        }
+
+        /* 연도별 그룹화 논문 리스트 디자인 */
+        .pub-year-group { 
+            margin-bottom: 48px; 
+        }
+        .pub-year-group:last-child { 
+            margin-bottom: 0; 
+        }
+        .year-title { 
+            font-size: 1.4rem; 
+            font-weight: 800; 
+            color: var(--text-main); 
+            border-bottom: 2px solid #e5e7eb; 
+            padding-bottom: 6px; 
+            margin-bottom: 20px; 
+        }
+        .pub-list-clean { 
+            list-style: none; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 24px; 
+        }
+        .pub-entry { 
+            padding-left: 16px; 
+            border-left: 3px solid #f3f4f6; 
+            transition: border-color 0.2s ease, transform 0.2s ease; 
+        }
+        .pub-entry:hover { 
+            border-left-color: var(--accent-color); 
+            transform: translateX(4px); 
+        }
+        .pub-title { 
+            font-size: 1.05rem; 
+            font-weight: 700; 
+            margin-bottom: 6px; 
+            color: var(--primary-color); 
+            line-height: 1.4;
+        }
+        .pub-authors { 
+            color: var(--text-main); 
+            font-size: 0.95rem; 
+            margin-bottom: 4px; 
+        }
+        .me { 
+            font-weight: 800; 
+            text-decoration: underline; 
+        }
+        .pub-venue { 
+            color: #4b5563; 
+            font-weight: 500; 
+            font-size: 0.9rem; 
+            font-style: italic; 
+            margin-bottom: 8px; 
+        }
+        .pub-links { 
+            display: flex; 
+            gap: 8px; 
+            margin-top: 6px; 
+        }
+        .pub-links a {
+            font-size: 0.75rem; 
+            font-weight: 600; 
+            padding: 3px 10px;
+            border-radius: 4px; 
+            border: 1px solid #d1d5db;
+            color: var(--text-muted); 
+            transition: all 0.2s;
+        }
+        .pub-links a:hover { 
+            border-color: var(--accent-color); 
+            color: var(--accent-color); 
+        }
+        /* 강조 뱃지 스타일 */
+        .pub-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 9999px; /* 둥근 알약 형태 */
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+        /* 스타일 옵션 1: 소프트 로즈/코랄 톤 (인용수, 수상 실적 등에 추천) */
+        .badge-highlight {
+            background-color: #ffe4e6;
+            color: #9f1239;
+            border: 1px solid #fecdd3;
+        }
+        /* 스타일 옵션 2: 세련된 블루 톤 (Featured/Selected 논문 등에 추천) */
+        .badge-blue {
+            background-color: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #dbeafe;
+        }
+
+
+        footer { 
+            background-color: #ffffff; 
+            border-top: 1px solid #eaeaea; 
+            padding: 40px 0; 
+            color: var(--text-muted); 
+            font-size: 0.9rem; 
+            text-align: center; 
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .pub-entry { padding-left: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 헤더 내비게이션 -->
+    <header>
+        <div class="container nav-inner">
+            <a href="index.html" class="logo">IRIS <span>Lab.</span></a>
+            <nav class="nav-links">
+                <a href="index.html?to=about">About</a>
+                <a href="index.html?to=research">Research</a>
+                <a href="index.html?to=news">News</a>
+                <a href="publications.html" class="active">Publications</a>
+                <a href="members.html">Members</a>
+                <a href="index.html?to=join">Join Us</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 서브 내비게이션 -->
+    <div class="sub-nav">
+        <div class="container sub-nav-links">
+            <a href="#intl-journal">Intl. Journals</a>
+            <a href="#intl-conf">Intl. Conferences</a>
+            <a href="#dom-journal">Domestic Journals</a>
+            <a href="#dom-conf">Domestic Conferences</a>
+        </div>
+    </div>
+
+    <!-- 페이지 타이틀 -->
+    <div class="page-header">
+        <div class="container">
+            <h1>Publications</h1>
+            <!-- <p>IRIS 연구실의 주요 논문 및 학술 연구 실적입니다.</p> -->
+        </div>
+    </div>
+
+    <!-- 1. International Journals -->
+    <section id="intl-journal" class="container">
+        <h2 class="section-title">International Journals</h2>
+        
+        <div class="pub-year-group">
+            <h3 class="year-title">2025</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">Interference management in private 5G networks via interference source localization and radio environment map construction</div>
+                    <div class="pub-authors"><span class="me">K.-W. Kim</span>, E. S. Jin, K.-Y. Cheon, H. Cho, H. Yoon, H. Kwon</div>
+                    <div class="pub-venue">IEEE Access, Volume 13, pp. 174148–174160</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <span class="pub-badge badge-blue">JCR Q1</span>
+                    <div class="pub-title">Line-of-sight probability in urban environments representing deterministic grids</div>
+                    <div class="pub-authors"><span class="me">K.-W. Kim</span>, H. Kwon, S. Park</div>
+                    <div class="pub-venue">IEEE Transactions on Antennas and Propagation, Volume 73, Issue 3, pp. 1792–1803</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <span class="pub-badge badge-blue">JCR Q1</span>
+                    <div class="pub-title">Sub-terahertz channel characterization in a lecture room from measurements with phase drift by a rotating horn antenna</div>
+                    <div class="pub-authors"><span class="me">K.-W. Kim</span>, M.-D. Kim, J.-J. Park, J. Lee, H.-K. Kwon</div>
+                    <div class="pub-venue">IEEE Transactions on Antennas and Propagation, Volume 73, Issue 2, pp. 1110–1124</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+        </div>
+        <div class="pub-year-group">
+            <h3 class="year-title">2024</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <span class="pub-badge badge-blue">JCR Q1</span>
+                    <div class="pub-title">Correlated and superposed signal decomposition for multipath channel parameterization</div>
+                    <div class="pub-authors"><span class="me">K.-W. Kim</span>, M.-D. Kim</div>
+                    <div class="pub-venue">IEEE Antennas and Wireless Propagation Letters, Volume 23, Issue 10, pp. 2865–2869</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <span class="pub-badge badge-blue">JCR Q1</span>
+                    <div class="pub-title">Ray-tracing-based data expansion from limited sub-THz channel measurements in urban street</div>
+                    <div class="pub-authors">I.-S. Lee, <span class="me">K.-W. Kim (co-first author)</span>, S.-J. Oh</div>
+                    <div class="pub-venue">IEEE Wireless Communications Letters, Volume 13, Issue 5, pp. 1305–1309</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">Optimal equivalent-time sampling for periodic complex signals with digital downconversion</div>
+                    <div class="pub-authors"><span class="me">K.-W. Kim</span>, H.-K. Kwon, M.-D. Kim</div>
+                    <div class="pub-venue">ETRI Journal, Volume 46, Issue 2, pp. 238–249</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+        </div>
+        <div class="pub-year-group">
+            <h3 class="year-title">2023</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <span class="pub-badge badge-highlight">Top Cited Article</span>
+                    <div class="pub-title">Measurement-based omnidirectional millimetre-wave and sub-THz propagation analysis in urban microcellular environment for 6G</div>
+                    <div class="pub-authors">J. Lee, J.-J. Park, <span class="me">, H.-K. Kwon, M.-D. Kim</div>
+                    <div class="pub-venue">IET Microwaves, Antennas and Propagation, Volume 17, Issue 6, pp. 443–453</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <span class="pub-badge badge-blue">JCR Q1</span>
+                    <div class="pub-title">159-GHz propagation measurement and analysis in urban microcellular environment for 6G</div>
+                    <div class="pub-authors">J. Lee, J.-J. Park, <span class="me">K.-W. Kim</span>, M.-D. Kim, H.-K. Kwon</div>
+                    <div class="pub-venue">IEEE Wireless Communications Letters, Volume 12, Issue 2, pp. 277–291</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+        </div>
+        <div class="pub-year-group">
+            <h3 class="year-title">2021</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <span class="pub-badge badge-highlight">Featured Article</span>
+                    <span class="pub-badge badge-highlight">Best Paper Award</span>
+                    <div class="pub-title">Empirical millimeter-wave wideband propagation characteristics of high-speed train environments</div>
+                    <div class="pub-authors">J.-J. Park, J. Lee, <span class="me">K.-W. Kim</span>, H.-K. Kwon, M.-D. Kim</div>
+                    <div class="pub-venue">ETRI Journal, Volume 43, Issue 3, pp. 377–388</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+        </div>
+        <div class="pub-year-group">
+            <h3 class="year-title">2020</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">Millimeter-wave diffraction-loss model based on over-rooftop propagation measurements</div>
+                    <div class="pub-authors"><span class="me">K.-W. Kim</span>, M.-D. Kim, J. Lee, J.-J. Park, Y. K. Yoon, Y. J. Chong</div>
+                    <div class="pub-venue">ETRI Journal, Volume 42, Issue 6, pp. 827–836</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <span class="pub-badge badge-highlight">Featured Article</span>
+                    <div class="pub-title">Millimeter-wave directional-antenna beamwidth effects on the ITU-R building entry loss (BEL) propagation model</div>
+                    <div class="pub-authors">J. Lee, <span class="me">K.-W. Kim</span>, M.-D. Kim, J.-J. Park, Y. K. Yoon, Y. J. Chong</div>
+                    <div class="pub-venue">ETRI Journal, Volume 42, Issue 1, pp. 7–16</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+        </div>
+        <div class="pub-year-group">
+            <h3 class="year-title">2019</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">Measurement-based millimeter-wave angular and delay dispersion characteristics of outdoor-to-indoor propagation for 5G millimeter-wave systems</div>
+                    <div class="pub-authors">J. Lee, <span class="me">K.-W. Kim</span>, M.-D. Kim, J.-J. Park, Y. K. Yoon, Y. J. Chong</div>
+                    <div class="pub-venue">IEEE Access, Volume 7, pp. 150492–150504</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">Site prediction model for the over rooftop path in a suburban environment at millimeter wave</div>
+                    <div class="pub-authors">Y. K. Yoon, <span class="me">K.-W. Kim</span>, Y. J. Chong</div>
+                    <div class="pub-venue">International Journal of Antennas and Propagation</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+        </div>
+        <div class="pub-year-group">
+            <h3 class="year-title">2016</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">Geometric optics-based propagation prediction model in urban street canyon environments</div>
+                    <div class="pub-authors"><span class="me">K.-W. Kim</span>, S.-J. Oh</div>
+                    <div class="pub-venue">IEEE Antennas and Wireless Propagation Letters, Volume 15</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+        </div>
+        <div class="pub-year-group">
+            <h3 class="year-title">2014</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">An efficient implementation of the ITU-R channel model for device-to-device simulation</div>
+                    <div class="pub-authors"><span class="me">K.-W. Kim</span>, S.-J. Oh</div>
+                    <div class="pub-venue">IEEE Communications Letters, Volume 18, Issue 9, pp. 1633–1636</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+        </div>
+        <div class="pub-year-group">
+            <h3 class="year-title">2011</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">Verification methodology for the IMT-Advanced channel simulator</div>
+                    <div class="pub-authors"><span class="me">K.-W. Kim</span>, J.-J. Park, S. Yoon, S.-J. Oh</div>
+                    <div class="pub-venue">IEICE Electronics Express, Volume 8, Issue 13, pp. 994–1000</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">A data flow optimization method for high speed MAC processing in an IEEE 802.16m modem</div>
+                    <div class="pub-authors"><span class="me">K.-W. Kim</span>, J.- Yi, S.-J. Oh</div>
+                    <div class="pub-venue">IEICE Electronics Express, Volume 8, Issue 8, pp. 530–535</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- 2. International Conferences -->
+    <section id="intl-conf" class="container">
+        <h2 class="section-title">International Conferences</h2>
+        
+        <div class="pub-year-group">
+            <h3 class="year-title">2025</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">Inter-network interference in private 5G: an empirical study in urban environments</div>
+                    <div class="pub-authors">H. Kwon, K. Cheon, <span class="me">K.-W. Kim</span>, H. Yoon, S. Park</div>
+                    <div class="pub-venue">IEEE International Conference on ICT Convergence (ICTC)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+        </div>
+
+        <div class="pub-year-group">
+            <h3 class="year-title">2024</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">Path loss measurements and analysis in an urban low-rise/suburban environment at 159 GHz</div>
+                    <div class="pub-authors">M.-D. Kim, J.-J. Park, J. Lee, <span class="me">K.-W. Kim</span>, B. S. Kang, H. K. Kwon</div>
+                    <div class="pub-venue">IEEE International Symposium on Antennas and Propagation (ISAP)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+        </div>
+
+        <div class="pub-year-group">
+            <h3 class="year-title">2023</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">Phase drift compensation of sub-THz horn antenna pattern in presence of phase center offset and orientation misalignment</div>
+                    <div class="pub-authors"><span class="me">K.-W. Kim</span>, M.-D. Kim, J.-N. Lee</div>
+                    <div class="pub-venue">IEEE International Conference on ICT Convergence (ICTC)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+                <li class="pub-entry">
+                    <span class="pub-badge badge-blue">BK21 우수학술대회</span>
+                    <div class="pub-title">Integration of radio environment map and smart phone measurements in real world deployment</div>
+                    <div class="pub-authors"><span class="me">K.-W. Kim</span>, K.-Y. Cheon, H. Kwon, S. Park</div>
+                    <div class="pub-venue">IEEE Communication Society Conference on Sensor, Mesh and Ad Hoc Communications and Networks workshops (SECON)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">Propagation measurement and analysis of a large cubicle office environment at 159 GHz</div>
+                    <div class="pub-authors">J. Lee, J.-J. Park, <span class="me">K.-W. Kim</span>, H.-K. Kwon, M.-D. Kim</div>
+                    <div class="pub-venue">IEEE International Symposium on Antennas and Propagation and USNC-URSI Radio Science Meeting (AP-S/URSI)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">Sub-THz outdoor measurements and multipath propagation characteristics</div>
+                    <div class="pub-authors">J. Lee, J.-J. Park, <span class="me">K.-W. Kim</span>, H.-K. Kwon, M.-D. Kim</div>
+                    <div class="pub-venue">IEEE European Conference on Antennas and Propagation (EuCAP)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+        </div>
+
+        <div class="pub-year-group">
+            <h3 class="year-title">2022</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">Implementation and performance evaluation of wideband channel sounder at 159 GHz</div>
+                    <div class="pub-authors">M.-D. Kim, H.-K. Kwon, <span class="me">K.-W. Kim</span>, J. Lee, J.-J. Park</div>
+                    <div class="pub-venue">IEEE International Conference on ICT Convergence (ICTC)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">Nullspace-based finite rate of innovation algorithm to resolve multiple signal sources</div>
+                    <div class="pub-authors"><span class="me">K.-W. Kim</span>, M.-D. Kim, J.-J. Park, J. Lee, H.-K. Kwon</div>
+                    <div class="pub-venue">IEEE International Conference on ICT Convergence (ICTC)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">Path loss and multipath profiles in a street canyon based on 253 GHz measurements</div>
+                    <div class="pub-authors"><span class="me">K.-W. Kim</span>, M.-D. Kim, J.-J. Park, J. Lee, H.-K. Kwon</div>
+                    <div class="pub-venue">IEEE Global Symposium on Millimeter-Waves and Terahertz (GSMM)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">Omnidirectional millimeter-wave propagation characteristics of corridor environments based on measurements at 28, 38, 71, and 82 GHz</div>
+                    <div class="pub-authors">J. Lee, <span class="me">K.-W. Kim</span>, J.-J. Park, M.-D. Kim, H.-K. Kwon</div>
+                    <div class="pub-venue">IEEE European Conference on Antennas and Propagation (EuCAP)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+        </div>
+
+        <div class="pub-year-group">
+            <h3 class="year-title">2021</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">Large- and small-scale fading characteristics of mmWave HST propagation channel based on 28-GHz measurements</div>
+                    <div class="pub-authors">J.-J. Park, J. Lee, <span class="me">K.-W. Kim</span>, M.-D. Kim</div>
+                    <div class="pub-venue">IEEE European Conference on Antennas and Propagation (EuCAP)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">Millimeter-wave large cubicle office propagation characteristics based on measurements at 28, 38, and 71 GHz</div>
+                    <div class="pub-authors">J. Lee, <span class="me">K.-W. Kim</span>, M.-D. Kim, J.-J. Park</div>
+                    <div class="pub-venue">IEEE European Conference on Antennas and Propagation (EuCAP)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">Efficient implementation of the SAGE algorithm for channel impulse response estimation</div>
+                    <div class="pub-authors"><span class="me">K.-W. Kim</span>, M.-D. Kim, J. Lee, J.-J. Park, H.-K. Kwon</div>
+                    <div class="pub-venue">IEEE International Conference on ICT Convergence (ICTC)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+        </div>
+
+        <div class="pub-year-group">
+            <h3 class="year-title">2020</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">Experimental reflection characteristics of 253 GHz in a small closed-room</div>
+                    <div class="pub-authors">M.-D. Kim, <span class="me">K.-W. Kim</span>, H.-K. Kwon, J. Lee, J.-J. Park</div>
+                    <div class="pub-venue">IEEE International Symposium on Antennas and Propagation (ISAP)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">253-GHz angular and delay profile measurements in outdoor street environment</div>
+                    <div class="pub-authors">J.-J. Park, J. Lee, <span class="me">K.-W. Kim</span>, M.-D. Kim</div>
+                    <div class="pub-venue">IEEE International Conference on ICT Convergence (ICTC)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">Multipath characteristics of outdoor-to-indoor propagation based on 32-GHz measurements</div>
+                    <div class="pub-authors">J. Lee, <span class="me">K.-W. Kim</span>, M.-D. Kim, J.-J. Park</div>
+                    <div class="pub-venue">IEEE European Conference on Antennas and Propagation (EuCAP)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">28-GHz high-speed train measurements and propagation characteristics analysis</div>
+                    <div class="pub-authors">J.-J. Park, J. Lee, <span class="me">K.-W. Kim</span>, M.-D. Kim</div>
+                    <div class="pub-venue">IEEE European Conference on Antennas and Propagation (EuCAP)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+        </div>
+
+        <div class="pub-year-group">
+            <h3 class="year-title">2019</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">Ray-tracing simulation of millimeter wave and sub-terahertz channels in urban environment</div>
+                    <div class="pub-authors"><span class="me">K.-W. Kim</span>, M.-D. Kim, J.-J. Park, J. Lee</div>
+                    <div class="pub-venue">IEEE International Conference on ICT Convergence (ICTC)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">Wide-sense stationarity of millimeter wave expressway channels based on 28 GHz measurements</div>
+                    <div class="pub-authors">J.-J. Park, J. Lee, <span class="me">K.-W. Kim</span>, M.-D. Kim, H.-K. Kwon, K. H. Lee</div>
+                    <div class="pub-venue">IEEE Vehicular Technology Conference-Fall (VTC-Fall)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">32-GHz outdoor-to-indoor channel measurement of propagation losses and delay spread</div>
+                    <div class="pub-authors">J. Lee, <span class="me">K.-W. Kim</span>, M.-D. Kim, J.-J. Park</div>
+                    <div class="pub-venue">IEEE International Symposium on Antennas and Propagation and USNC-URSI Radio Science Meeting (AP-S/URSI)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">Multipath propagation characteristics for 5G vehicular communications based on 28 GHz expressway measurements</div>
+                    <div class="pub-authors">J.-J. Park, J. Lee, <span class="me">K.-W. Kim</span>, M.-D. Kim, K. C. Lee</div>
+                    <div class="pub-venue">IEEE European Conference on Antennas and Propagation (EuCAP)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">Directional delay spread characteristics of outdoor-to-indoor propagation based on millimeter-wave measurements</div>
+                    <div class="pub-authors">J. Lee, <span class="me">K.-W. Kim</span>, M.-D. Kim, J.-J. Park</div>
+                    <div class="pub-venue">IEEE European Conference on Antennas and Propagation (EuCAP)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+        </div>
+
+        <div class="pub-year-group">
+            <h3 class="year-title">2018</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">28 GHz Doppler measurements in high-speed express way environments</div>
+                    <div class="pub-authors">J.-J. Park, J. Lee, <span class="me">K.-W. Kim</span>, M.-D. Kim, K. C. Lee</div>
+                    <div class="pub-venue">IEEE International Symposium on Personal, Indoor and Mobile Radio Communications (PIMRC)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">Spectral leakage reduction of power-delay-doppler profile for mmWave V2I channel</div>
+                    <div class="pub-authors"><span class="me">K.-W. Kim</span>, J.-J. Park, M.-D. Kim, J. Lee</div>
+                    <div class="pub-venue">IEEE International Conference on ICT Convergence (ICTC)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">Vehicle antenna position dependent path loss for millimeter-wave V2V communication</div>
+                    <div class="pub-authors">J.-J. Park, J. Lee, <span class="me">K.-W. Kim</span>, K. C. Lee, M.-D. Kim</div>
+                    <div class="pub-venue">IEEE Global Symposium on Millimeter-Waves (GSMM)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">Empirical investigation of antenna beamwidth effects on the ITU-R building entry loss (BEL) model based on 32 GHz measurements</div>
+                    <div class="pub-authors">J. Lee, <span class="me">K.-W. Kim</span>, M.-D. Kim, J.-J. Park, H. K. Chung</div>
+                    <div class="pub-venue">IEEE Global Symposium on Millimeter-Waves (GSMM)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">Analysis of the effect of antenna beamwidth on received power in large indoor environments based on millimeter-wave channel measurements</div>
+                    <div class="pub-authors">J. Lee, <span class="me">K.-W. Kim</span>, J.-J. Park, M.-D. Kim</div>
+                    <div class="pub-venue">IEEE International Symposium on Antennas and Propagation (ISAP)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">System impairment compensation of mmWave channel sounder with multiple antennas</div>
+                    <div class="pub-authors"><span class="me">K.-W. Kim</span>, M.-D. Kim, H.-K. Kwon, J.-J. Park</div>
+                    <div class="pub-venue">IEEE International Symposium on Antennas and Propagation (ISAP)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">Measurement-based beam mis-alignment analysis of millimeter-wave directional beamforming in large indoor environments</div>
+                    <div class="pub-authors">J. Lee, M.-D. Kim, <span class="me">K.-W. Kim</span>, J.-J. Park</div>
+                    <div class="pub-venue">IET Conference Publications</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+        </div>
+
+        <div class="pub-year-group">
+            <h3 class="year-title">2017</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">Clutter loss characteristic in mm-wave bands for small urban environment</div>
+                    <div class="pub-authors">Y. K. Yoon, J. H. Kim, <span class="me">K.-W. Kim</span>, M.-D. Kim, Y. J. Chong</div>
+                    <div class="pub-venue">IEEE International Conference on ICT Convergence (ICTC)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">Diffraction loss model based on 28 GHz over-rooftop propagation measurements</div>
+                    <div class="pub-authors"><span class="me">K.-W. Kim</span>, M.-D. Kim, J.-J. Park, J. Lee, J. Liang, K.-C. Lee</div>
+                    <div class="pub-venue">IEEE Vehicular Technology Conference-Fall (VTC-Fall)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">Millimeter wave vehicular blockage characteristics based on 28 GHz measurements</div>
+                    <div class="pub-authors">J.-J. Park, J. Lee, J. Liang, <span class="me">K.-W. Kim</span>, K.-C. Lee, M.-D. Kim</div>
+                    <div class="pub-venue">IEEE Vehicular Technology Conference-Fall (VTC-Fall)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+        </div>
+
+        <div class="pub-year-group">
+            <h3 class="year-title">2016</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">Joint probability distribution of power delay profiles based on 28 GHz channel measurements</div>
+                    <div class="pub-authors"><span class="me">K.-W. Kim</span>, M.-D. Kim, J.-J. Park, J. Lee, J. Liang, B. Park</div>
+                    <div class="pub-venue">IEEE-APS Topical Conference on Antennas and Propagation in Wireless Communications (APWC)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">Comparison of SAGE and BBF for multipath angular and delay spread characteristics with 28 GHz channel measurements</div>
+                    <div class="pub-authors">J. Liang, M.-D. Kim, J. Lee, J.-J. Park, B. Park, <span class="me">K.-W. Kim</span></div>
+                    <div class="pub-venue">IEEE-APS Topical Conference on Antennas and Propagation in Wireless Communications (APWC)</div>
+                    <!-- <div class="pub-links">
+                        <a href="https://ieeexplore.ieee.org/document/11192273" target="_blank" rel="noopener noreferrer">DOI</a>
+                    </div> -->
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- 3. Domestic Journals -->
+    <section id="dom-journal" class="container">
+        <h2 class="section-title">Domestic Journals</h2>
+        
+        <div class="pub-year-group">
+            <h3 class="year-title">2022</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">ITU-R및글로벌6G sub-THz연구동향</div>
+                    <div class="pub-authors">박재준, 이주열, <span class="me">김경원</span>, 김명돈</div>
+                    <div class="pub-venue">정보와 통신: 한국통신학회지, Volume 39, Issue 9, pp. 10–17</div>
+                </li>
+            </ul>
+        </div>
+        <div class="pub-year-group">
+            <h3 class="year-title">2015</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">밀리미터파 대역에서 5G와 고정통신 간의 간섭연구</div>
+                    <div class="pub-authors">오성준, <span class="me">김경원</span></div>
+                    <div class="pub-venue">전자파기술, Volume 26, Issue 2, pp. 79–82</div>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- 4. Domestic Conferences -->
+    <section id="dom-conf" class="container">
+        <h2 class="section-title">Domestic Conferences</h2>
+        
+        <div class="pub-year-group">
+            <h3 class="year-title">2024</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">도심지 고층 거리협곡 환경의 159GHz 대역 경로손실 특성 측정</div>
+                    <div class="pub-authors">김명돈, <span class="me">김경원</span>, 권헌국, 이주열, 박재준</div>
+                    <div class="pub-venue">한국전자파학회 동계종합학술대회 (KIEES)</div>
+                </li>
+                <li class="pub-entry">
+                    <span class="pub-badge badge-highlight">우수논문상</span>
+                    <div class="pub-title">셀룰러 네트워크 시뮬레이션을 위한 Gaussian-perturbed lattice 모델</div>
+                    <div class="pub-authors"><span class="me">김경원</span>, 천경열, 권혜연, 박승근</div>
+                    <div class="pub-venue">통신정보 합동학술대회 (JCCI)</div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="pub-year-group">
+            <h3 class="year-title">2023</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">159GHz 대역 채널사운더의 다중경로 시공간 특성 측정 성능시험</div>
+                    <div class="pub-authors">김명돈, <span class="me">김경원</span>, 권헌국, 이주열, 박재준</div>
+                    <div class="pub-venue">한국전자파학회 추계종합학술대회 (KIEES)</div>
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">159 GHz 대역 도심환경 전파채널 실측 및 분석결과</div>
+                    <div class="pub-authors">박재준, 김명돈, 이주열, <span class="me">김경원</span></div>
+                    <div class="pub-venue">통신정보 합동학술대회 (JCCI)</div>
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">309GHz 대역 채널사운더의 근거리 다중경로 전파특성 측정 성능시험</div>
+                    <div class="pub-authors">김명돈, <span class="me">김경원</span>, 권헌국, 이주열, 박재준</div>
+                    <div class="pub-venue">한국전자파학회 동계종합학술대회 (KIEES)</div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="pub-year-group">
+            <h3 class="year-title">2022</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">테라헤르츠 대역 채널사운더용 광대역 신호처리 모듈 개발</div>
+                    <div class="pub-authors">김명돈, <span class="me">김경원</span>, 권헌국, 이주열, 박재준, 최장석</div>
+                    <div class="pub-venue">한국전자파학회 하계종합학술대회 (KIEES)</div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="pub-year-group">
+            <h3 class="year-title">2019</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">전력-수신각 스펙트럼 추정을 위한 안테나 패턴 보상 방법</div>
+                    <div class="pub-authors"><span class="me">김경원</span>, 이주열, 김명돈, 박재준</div>
+                    <div class="pub-venue">한국통신학회 추계종합학술발표회 (KICS)</div>
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">28 GHz V2I 채널 측정에 기반한 채널 임펄스 응답의 자기 상관 관계 분석</div>
+                    <div class="pub-authors"><span class="me">김경원</span>, 박재준, 이주열, 김명돈, 권헌국</div>
+                    <div class="pub-venue">한국통신학회 하계종합학술발표회 (KICS)</div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="pub-year-group">
+            <h3 class="year-title">2018</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">밀리미터파 대역 클러터 손실 측정 결과 및 분석</div>
+                    <div class="pub-authors"><span class="me">김경원</span>, 김명돈, 이주열, 박재준</div>
+                    <div class="pub-venue">한국전자파학회 하계종합학술대회 (KIEES)</div>
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">28GHz 대역에서의 Doppler 측정 결과 및 분석</div>
+                    <div class="pub-authors"><span class="me">김경원</span>, 김명돈, 박재준, 이주열</div>
+                    <div class="pub-venue">한국전자파학회 하계종합학술대회 (KIEES)</div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="pub-year-group">
+            <h3 class="year-title">2017</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">부도심지 환경에서 건물 배열에 따른 밀리파 대역 경로 손실 특성</div>
+                    <div class="pub-authors">윤영근, 김정환, <span class="me">김경원</span>, 정영준</div>
+                    <div class="pub-venue">한국전자파학회 하계종합학술대회 (KIEES)</div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="pub-year-group">
+            <h3 class="year-title">2015</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">레이트레이싱 시뮬레이션을 이용한 밀리미터파 채널 구현</div>
+                    <div class="pub-authors"><span class="me">김경원</span>, 오성준</div>
+                    <div class="pub-venue">한국통신학회 동계종합학술발표회 (KICS)</div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="pub-year-group">
+            <h3 class="year-title">2013</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">상향링크와 하향링크 동시 분석을 위한 IEEE 802.16m 시스템 레벨 시뮬레이터 구현</div>
+                    <div class="pub-authors"><span class="me">김경원</span>, 오성준</div>
+                    <div class="pub-venue">한국통신학회 하계종합학술발표회 (KICS)</div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="pub-year-group">
+            <h3 class="year-title">2012</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">객체 밀집 지역에 적용 가능한 개선된 추적 알고리즘 제안</div>
+                    <div class="pub-authors">이원영, 김대희, <span class="me">김경원</span>, 오성준</div>
+                    <div class="pub-venue">한국통신학회 동계종합학술발표회 (KICS)</div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="pub-year-group">
+            <h3 class="year-title">2010</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">고속 모뎀 SoC 설계를 위한 최적화된 MAC 계층의 구현</div>
+                    <div class="pub-authors"><span class="me">김경원</span>, 이준환, 오성준</div>
+                    <div class="pub-venue">한국통신학회 하계종합학술발표회 (KICS)</div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="pub-year-group">
+            <h3 class="year-title">2009</h3>
+            <ul class="pub-list-clean">
+                <li class="pub-entry">
+                    <div class="pub-title">채널 특성에 따른 Cooperative MIMO 성능 분석</div>
+                    <div class="pub-authors">박치형, 문기량, 김대희, 노정훈, <span class="me">김경원</span>, 오성준</div>
+                    <div class="pub-venue">한국통신학회 추계종합학술발표회 (KICS)</div>
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">하향링크 LTE 시스템에서의 VoIP 패킷 스케쥴링</div>
+                    <div class="pub-authors">김대희, 문기량, 박치형, 노정훈, <span class="me">김경원</span>, 오성준</div>
+                    <div class="pub-venue">한국통신학회 하계종합학술발표회 (KICS)</div>
+                </li>
+                <li class="pub-entry">
+                    <div class="pub-title">하향 LTE 시스템에서의 α-level MCS 결정 알고리즘</div>
+                    <div class="pub-authors">문기량, 박치형, 노정훈, 김대희, <span class="me">김경원</span>, 오성준</div>
+                    <div class="pub-venue">한국통신학회 하계종합학술발표회 (KICS)</div>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer>
+        <div class="container">
+            <p>&copy; IRIS Lab. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- 페이지 트랜지션 스크립트 -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            requestAnimationFrame(() => document.body.classList.add('page-loaded'));
+
+            const links = document.querySelectorAll('a');
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    const target = this.getAttribute('target');
+                    
+                    if (target === '_blank' || !href || href.startsWith('mailto:')) return;
+                    if (href.startsWith('#')) return;
+
+                    e.preventDefault();
+                    document.body.classList.remove('page-loaded');
+                    document.body.classList.add('page-exit');
+
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 400); 
+                });
+            });
+        });
+    </script>
+</body>
+</html>

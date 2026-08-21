@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRIS Lab | Intelligent Radio & Information Systems Laboratory </title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable.css" />
+    <style>
+        /* 기본 스타일 초기화 및 폰트 설정 */
+        :root {
+            --primary-color: #000000;
+            --accent-color: #2563eb;
+            --bg-color: #f9fafb;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --header-height: 72px;
+        }
+        
+        /* 스무스 스크롤 적용 */
+        html { 
+            scroll-behavior: smooth; 
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Pretendard Variable', Pretendard, sans-serif;
+            color: var(--text-main);
+            line-height: 1.6;
+            background-color: #ffffff;
+            
+            /* 페이지 슬라이드 애니메이션 초기 설정 */
+            opacity: 0;
+            transform: translateX(30px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            overflow-x: hidden; 
+        }
+        
+        /* 페이지 로드 시 적용되는 클래스 */
+        body.page-loaded {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        /* 페이지 나갈 때 적용되는 클래스 */
+        body.page-exit {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* 공통 레이아웃 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        section { 
+            padding: 100px 0; 
+            scroll-margin-top: var(--header-height);
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+        .section-desc {
+            color: var(--text-muted);
+            font-size: 1.125rem;
+            margin-bottom: 3rem;
+        }
+
+        /* 내비게이션 (헤더) */
+        header {
+            position: sticky;
+            top: 0; left: 0; right: 0;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #eaeaea;
+            z-index: 1000;
+            height: var(--header-height);
+        }
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+        }
+        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.03em; }
+        .logo span { color: var(--accent-color); }
+        .nav-links { display: flex; gap: 2rem; font-weight: 600; font-size: 1rem; }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent-color); transition: color 0.2s; }
+
+        /* 히어로(메인) 섹션 */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #f3f4f6 0%, #ffffff 100%);
+            padding-top: var(--header-height);
+        }
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+        }
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 2.5rem;
+        }
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        /* 연구 분야 섹션 */
+        .research-bg { background-color: var(--bg-color); }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        .card {
+            background: white;
+            padding: 40px 32px;
+            border-radius: 16px;
+            border: 1px solid #eaeaea;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            border-color: transparent;
+        }
+        .card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 12px; }
+        .card p { color: var(--text-muted); font-size: 0.95rem; }
+        .card-icon { font-size: 2rem; margin-bottom: 20px; color: var(--accent-color); }
+
+        /* 최근 소식 섹션 (복구) */
+        .news-list { border-top: 1px solid #eaeaea; }
+        .news-item {
+            display: flex;
+            padding: 24px 0;
+            border-bottom: 1px solid #eaeaea;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+        .news-item:hover { background-color: #f9fafb; }
+        .news-date {
+            width: 140px;
+            font-weight: 700;
+            color: var(--accent-color);
+            flex-shrink: 0;
+        }
+        .news-content { font-weight: 500; font-size: 1.1rem; }
+
+        /* 지원 안내 섹션 */
+        .join-us {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            border-radius: 24px;
+            padding: 80px 40px;
+            margin: 100px 0;
+        }
+        .join-us h2 { font-size: 2.5rem; margin-bottom: 16px; }
+        .join-us p { color: #a1a1aa; margin-bottom: 32px; font-size: 1.1rem; }
+        .join-us .btn { background-color: white; color: var(--primary-color); }
+        .join-us .btn:hover { background-color: #f4f4f5; }
+
+        /* 푸터 */
+        footer {
+            background-color: #ffffff;
+            border-top: 1px solid #eaeaea;
+            padding: 60px 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .footer-info p { margin-bottom: 8px; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .nav-links { display: none; }
+            .news-item { flex-direction: column; align-items: flex-start; gap: 8px; padding: 20px; }
+            .footer-inner { flex-direction: column; gap: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 헤더 -->
+    <header>
+        <div class="container nav-inner">
+            <a href="index.html" class="logo">IRIS <span>Lab.</span></a>
+            <nav class="nav-links">
+                <!-- 내부 해시 스크롤 -->
+                <a href="#about">About</a>
+                <a href="#research">Research</a>
+                <a href="#news">News</a>
+                <!-- 별도 페이지 이동 -->
+                <a href="publications.html">Publications</a>
+                <a href="members.html">Members</a>
+                <!-- 내부 해시 스크롤 -->
+                <a href="#join">Join Us</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 히어로 -->
+    <section class="hero" id="about">
+        <div class="container">
+            <h1>무선 시스템의<br>새로운 기준을 만듭니다.</h1>
+            <p>차세대 무선 시스템의 핵심은 무선 환경에 대한 이해에 있습니다. IRIS 연구실은 무선 실측 데이터와 현실 환경을 탐구하고 모델링하며, 시뮬레이션과 AI를 통해 현실적인 채널 모델과 시스템 시뮬레이션을 연결하여 차세대 무선 시스템을 연구합니다.</p>
+            <a href="#research" class="btn">연구 분야 알아보기</a>
+        </div>
+    </section>
+
+    <!-- 연구 분야 -->
+    <section class="research-bg" id="research">
+        <div class="container">
+            <h2 class="section-title">Research Areas</h2>
+            <p class="section-desc">우리는 무선 환경을 이해하고, 그 이해를 미래의 무선 시스템으로 연결합니다.</p>
+            
+            <div class="grid-3">
+                <div class="card">
+                    <div class="card-icon">🏙️</div>
+                    <h3>Wireless Channel Modeling</h3>
+                    <p>복잡한 물리적 환경에서의 전파 특성을 분석하고 실측 기반의 무선 채널 모델을 개발합니다. 도심, 차량, 비지상 네트워크(NTN) 등 다양한 환경을 모델링하여 차세대 통신망 설계의 기반을 마련합니다.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">〰️</div>
+                    <h3>Wireless Communications and Signal Processing</h3>
+                    <p>가혹한 무선 환경에서도 신뢰성 있고 효율적으로 동작하는 통신 및 신호 처리 알고리즘을 개발합니다. 파형 설계, 빔포밍, 채널 추정 등 미래 고주파·광대역 무선 시스템을 위한 핵심 기술을 연구합니다.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📊</div>
+                    <h3>Network QoS Evaluation and Optimiaztion</h3>
+                    <p>현실적인 시뮬레이션과 데이터 기반 방법론을 통해 무선 네트워크의 서비스 품질(QoS)을 평가하고 최적화합니다. 디지털 트윈과 AI 기법을 활용하여 효율적인 자원 관리와 네트워크 성능 예측을 수행합니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 최근 소식 (복구 완료) -->
+    <section id="news">
+        <div class="container">
+            <h2 class="section-title">Latest News</h2>
+            <p class="section-desc">연구실의 최근 소식입니다.</p>
+            
+            <div class="news-list">
+                <div class="news-item">
+                    <div class="news-date">2026. 06</div>
+                    <div class="news-content"><strong>한국전자통신연구원(ETRI) 산학과제 「AI기반 무선국 식별 및 상용망 분석 SW 제작」</strong> 협약 체결.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 지원 안내 -->
+    <section id="join">
+        <div class="container">
+            <div class="join-us">
+                <h2>열정적인 연구원을 모집합니다</h2>
+                <p>통신 기술의 미래가 궁금한 학부연구생 및 석/박사 과정을 상시 모집합니다.<br>관심 있는 학생들은 언제든 부담없이 이메일로 연락주세요.</p>
+                <a href="mailto:kyungwon@inu.ac.kr" class="btn">메일 보내기</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer>
+        <div class="container footer-inner">
+            <div class="footer-info">
+                <p><strong>IRIS Lab.</strong> | Intelligent Radio & Information Systems Laboratory</p>
+                <p>Room 509, Building 7, Incheon National University, 119, Academy-ro, Yeonsu-gu, Incheon, Republic of Korea, 22012</p>
+                <p>Email: kyungwon@inu.ac.kr</p>
+            </div>
+            <div>
+                <p>&copy; IRIS Lab. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 페이지 트랜지션 및 URL 파라미터 기반 스크롤 스크립트 -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1. 페이지 로드 시 우측에서 슬라이드인 애니메이션
+            requestAnimationFrame(() => {
+                document.body.classList.add('page-loaded');
+            });
+
+            // 2. 다른 페이지(Members 등)에서 URL파라미터(?to=join)를 달고 넘어온 경우
+            const urlParams = new URLSearchParams(window.location.search);
+            const to = urlParams.get('to');
+            if (to) {
+                const targetElement = document.getElementById(to);
+                if (targetElement) {
+                    // 페이지 로드 애니메이션이 끝난 뒤(0.6초 후) 목표 섹션으로 스무스 스크롤
+                    setTimeout(() => {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                        // URL 창에서 '?to=' 파라미터를 깔끔하게 없애고 해시로 변경
+                        window.history.replaceState(null, null, '#' + to);
+                    }, 600);
+                }
+            }
+
+            // 3. 페이지 이탈 시 좌측으로 슬라이드아웃 애니메이션
+            const links = document.querySelectorAll('a');
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    const target = this.getAttribute('target');
+                    
+                    if (target === '_blank' || !href || href.startsWith('mailto:')) return;
+                    // 메인 페이지 안에서의 내부 이동(#아이디)은 애니메이션 제외 (바로 스무스 스크롤)
+                    if (href.startsWith('#')) return;
+
+                    e.preventDefault();
+                    // 애니메이션 클래스 적용
+                    document.body.classList.remove('page-loaded');
+                    document.body.classList.add('page-exit');
+
+                    // CSS 트랜지션 시간(0.4초)을 기다린 후 실제 페이지 이동 처리
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 400); 
+                });
+            });
+        });
+    </script>
+</body>
+</html>
