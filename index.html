@@ -201,43 +201,37 @@
         .footer-info p { margin-bottom: 8px; }
 
         @media (max-width: 768px) {
-            /* 1. 헤더 높이를 자동으로 조정하고 위아래 여백을 줍니다 */
+            /* 1. 헤더 높이를 자동으로 조정하고 여백을 약간 넓힙니다 */
             header { 
                 height: auto; 
-                padding: 12px 0; 
+                padding: 16px 0; 
             }
             
-            /* 2. 로고와 메뉴가 위아래로 나란히 배치되도록 세로(column) 정렬합니다 */
+            /* 2. 로고와 메뉴를 위아래로 배치 */
             .nav-inner { 
                 flex-direction: column; 
-                gap: 12px; 
+                gap: 16px; 
             }
             
-            /* 3. 메뉴를 다시 보이게(flex) 하고, 넘치는 부분은 가로 스크롤이 되도록 설정합니다 */
+            /* 3. 자동 줄바꿈(flex-wrap)을 적용하여 모든 메뉴가 보이게 만듭니다 */
             .nav-links { 
                 display: flex; 
+                flex-wrap: wrap;         /* 핵심: 공간이 부족하면 아랫줄로 넘김 */
+                justify-content: center; /* 메뉴들을 가운데 정렬 */
+                gap: 12px 24px;          /* 위아래 간격 12px, 좌우 간격 24px */
                 width: 100%; 
-                overflow-x: auto; 
-                white-space: nowrap; 
-                gap: 1.5rem; 
-                padding-bottom: 4px; 
-                justify-content: flex-start;
+                font-size: 0.95rem;      /* 모바일에서는 글씨 크기를 살짝 줄임 */
             }
             
-            /* 모바일 가로 스크롤바 숨기기 (깔끔한 UI를 위해 추가) */
-            .nav-links::-webkit-scrollbar {
-                display: none;
-            }
-            
-            /* 기존에 있던 다른 모바일 설정들은 그대로 유지합니다 */
-            .pub-entry { padding-left: 12px; } /* publications.html용 */
-            .hero h1 { font-size: 2.5rem; } /* index.html용 */
-            .news-item { flex-direction: column; align-items: flex-start; gap: 8px; padding: 20px; } /* index.html용 */
-            .footer-inner { flex-direction: column; gap: 24px; } /* index.html용 */
-            .prof-card { flex-direction: column; text-align: left; align-items: center; } /* members.html용 */
-            .prof-details { text-align: left; width: 100%; } /* members.html용 */
-            .prof-info-list li { flex-direction: column; gap: 2px; margin-bottom: 16px; } /* members.html용 */
-            .prof-info-year { width: auto; color: var(--accent-color); font-size: 0.85rem; } /* members.html용 */
+            /* 기존 모바일 설정 유지 */
+            .pub-entry { padding-left: 12px; }
+            .hero h1 { font-size: 2.5rem; }
+            .news-item { flex-direction: column; align-items: flex-start; gap: 8px; padding: 20px; }
+            .footer-inner { flex-direction: column; gap: 24px; }
+            .prof-card { flex-direction: column; text-align: left; align-items: center; }
+            .prof-details { text-align: left; width: 100%; }
+            .prof-info-list li { flex-direction: column; gap: 2px; margin-bottom: 16px; }
+            .prof-info-year { width: auto; color: var(--accent-color); font-size: 0.85rem; }
         }
     </style>
 </head>
