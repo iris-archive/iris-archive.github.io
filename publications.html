@@ -202,37 +202,48 @@
         }
 
         @media (max-width: 768px) {
-            /* 1. 헤더 높이를 자동으로 조정하고 여백을 약간 넓힙니다 */
+            /* 1. 모바일에서 메인 메뉴가 여러 줄이 되므로, 헤더의 기준 높이를 140px로 늘립니다 */
+            :root {
+                --header-height: 140px; 
+            }
+            
+            /* 2. 메인 헤더: 상단 고정 유지 및 늘어난 높이 적용 */
             header { 
-                height: auto; 
-                padding: 16px 0; 
+                position: sticky; 
+                top: 0;
+                height: var(--header-height); 
+                padding: 12px 0; 
             }
             
-            /* 2. 로고와 메뉴를 위아래로 배치 */
-            .nav-inner { 
-                flex-direction: column; 
-                gap: 16px; 
-            }
-            
-            /* 3. 자동 줄바꿈(flex-wrap)을 적용하여 모든 메뉴가 보이게 만듭니다 */
-            .nav-links { 
-                display: flex; 
-                flex-wrap: wrap;         /* 핵심: 공간이 부족하면 아랫줄로 넘김 */
-                justify-content: center; /* 메뉴들을 가운데 정렬 */
-                gap: 12px 24px;          /* 위아래 간격 12px, 좌우 간격 24px */
-                width: 100%; 
-                font-size: 0.95rem;      /* 모바일에서는 글씨 크기를 살짝 줄임 */
-            }
-
+            /* 3. 서브 메뉴: 늘어난 메인 헤더(140px) 바로 아래에 고정 유지 */
             .sub-nav {
+                position: sticky;
+                top: var(--header-height); 
                 height: auto;          
                 padding: 12px 0;       
             }
+
+            /* 4. 메인 메뉴 정렬 및 줄바꿈 */
+            .nav-inner { 
+                flex-direction: column; 
+                gap: 12px; 
+                justify-content: center;
+            }
+            .nav-links { 
+                display: flex; 
+                flex-wrap: wrap;         
+                justify-content: center; 
+                gap: 8px 20px;          
+                width: 100%; 
+                font-size: 0.95rem;      
+            }
+            
+            /* 5. 서브 메뉴 정렬 및 줄바꿈 */
             .sub-nav-links {
-                flex-wrap: wrap;         /* 공간이 모자라면 아랫줄로 넘김 */
-                white-space: normal;     /* 강제로 한 줄로 표시하는 설정 해제 */
-                justify-content: center; /* 텍스트 가운데 정렬 */
-                gap: 8px 16px;           /* 위아래 간격 8px, 좌우 간격 16px */
+                flex-wrap: wrap;         
+                white-space: normal;     
+                justify-content: center; 
+                gap: 8px 16px;           
             }
             
             /* 기존 모바일 설정 유지 */
