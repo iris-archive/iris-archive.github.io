@@ -255,6 +255,31 @@
             .prof-details { text-align: left; width: 100%; }
             .prof-info-list li { flex-direction: column; gap: 2px; margin-bottom: 16px; }
             .prof-info-year { width: auto; color: var(--accent-color); font-size: 0.85rem; }
+            
+            /* 🚨 1. 글자가 화면을 뚫고 나가지 않도록 자동 줄바꿈 강제 적용 */
+            * {
+                word-break: keep-all;
+                overflow-wrap: break-word;
+            }
+
+            /* 🚨 2. 카드 그리드가 모바일 화면 너비를 초과하지 않도록 무조건 1줄(1fr)로 고정 */
+            .grid-3, .members-grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* 🚨 3. 모바일 화면에 비해 너무 큰 여백(Padding)과 글자 크기(Font-size) 축소 */
+            .join-us { 
+                padding: 40px 24px; /* 기존 좌우 여백 40px -> 24px로 축소 */
+            }
+            .join-us h2 { 
+                font-size: 1.8rem;  /* 기존 2.5rem에서 축소 */
+            }
+            .prof-card { 
+                padding: 24px;      /* 기존 40px에서 축소 */
+            }
+            .page-header h1 { 
+                font-size: 2.2rem;  /* 기존 3rem에서 축소 */
+            }
         }
     </style>
 </head>
