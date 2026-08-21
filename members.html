@@ -115,6 +115,17 @@
                 font-size: 0.95rem;      /* 모바일에서는 글씨 크기를 살짝 줄임 */
             }
             
+            .sub-nav {
+                height: auto;          
+                padding: 12px 0;       
+            }
+            .sub-nav-links {
+                flex-wrap: wrap;         /* 공간이 모자라면 아랫줄로 넘김 */
+                white-space: normal;     /* 강제로 한 줄로 표시하는 설정 해제 */
+                justify-content: center; /* 텍스트 가운데 정렬 */
+                gap: 8px 16px;           /* 위아래 간격 8px, 좌우 간격 16px */
+            }
+            
             /* 기존 모바일 설정 유지 */
             .pub-entry { padding-left: 12px; }
             .hero h1 { font-size: 2.5rem; }
