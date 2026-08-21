@@ -202,8 +202,37 @@
         }
 
         @media (max-width: 768px) {
-            .nav-links { display: none; }
+            /* 1. 헤더 높이를 자동으로 조정하고 여백을 약간 넓힙니다 */
+            header { 
+                height: auto; 
+                padding: 16px 0; 
+            }
+            
+            /* 2. 로고와 메뉴를 위아래로 배치 */
+            .nav-inner { 
+                flex-direction: column; 
+                gap: 16px; 
+            }
+            
+            /* 3. 자동 줄바꿈(flex-wrap)을 적용하여 모든 메뉴가 보이게 만듭니다 */
+            .nav-links { 
+                display: flex; 
+                flex-wrap: wrap;         /* 핵심: 공간이 부족하면 아랫줄로 넘김 */
+                justify-content: center; /* 메뉴들을 가운데 정렬 */
+                gap: 12px 24px;          /* 위아래 간격 12px, 좌우 간격 24px */
+                width: 100%; 
+                font-size: 0.95rem;      /* 모바일에서는 글씨 크기를 살짝 줄임 */
+            }
+            
+            /* 기존 모바일 설정 유지 */
             .pub-entry { padding-left: 12px; }
+            .hero h1 { font-size: 2.5rem; }
+            .news-item { flex-direction: column; align-items: flex-start; gap: 8px; padding: 20px; }
+            .footer-inner { flex-direction: column; gap: 24px; }
+            .prof-card { flex-direction: column; text-align: left; align-items: center; }
+            .prof-details { text-align: left; width: 100%; }
+            .prof-info-list li { flex-direction: column; gap: 2px; margin-bottom: 16px; }
+            .prof-info-year { width: auto; color: var(--accent-color); font-size: 0.85rem; }
         }
     </style>
 </head>
