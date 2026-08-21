@@ -201,10 +201,43 @@
         .footer-info p { margin-bottom: 8px; }
 
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .nav-links { display: none; }
-            .news-item { flex-direction: column; align-items: flex-start; gap: 8px; padding: 20px; }
-            .footer-inner { flex-direction: column; gap: 24px; }
+            /* 1. 헤더 높이를 자동으로 조정하고 위아래 여백을 줍니다 */
+            header { 
+                height: auto; 
+                padding: 12px 0; 
+            }
+            
+            /* 2. 로고와 메뉴가 위아래로 나란히 배치되도록 세로(column) 정렬합니다 */
+            .nav-inner { 
+                flex-direction: column; 
+                gap: 12px; 
+            }
+            
+            /* 3. 메뉴를 다시 보이게(flex) 하고, 넘치는 부분은 가로 스크롤이 되도록 설정합니다 */
+            .nav-links { 
+                display: flex; 
+                width: 100%; 
+                overflow-x: auto; 
+                white-space: nowrap; 
+                gap: 1.5rem; 
+                padding-bottom: 4px; 
+                justify-content: flex-start;
+            }
+            
+            /* 모바일 가로 스크롤바 숨기기 (깔끔한 UI를 위해 추가) */
+            .nav-links::-webkit-scrollbar {
+                display: none;
+            }
+            
+            /* 기존에 있던 다른 모바일 설정들은 그대로 유지합니다 */
+            .pub-entry { padding-left: 12px; } /* publications.html용 */
+            .hero h1 { font-size: 2.5rem; } /* index.html용 */
+            .news-item { flex-direction: column; align-items: flex-start; gap: 8px; padding: 20px; } /* index.html용 */
+            .footer-inner { flex-direction: column; gap: 24px; } /* index.html용 */
+            .prof-card { flex-direction: column; text-align: left; align-items: center; } /* members.html용 */
+            .prof-details { text-align: left; width: 100%; } /* members.html용 */
+            .prof-info-list li { flex-direction: column; gap: 2px; margin-bottom: 16px; } /* members.html용 */
+            .prof-info-year { width: auto; color: var(--accent-color); font-size: 0.85rem; } /* members.html용 */
         }
     </style>
 </head>
