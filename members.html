@@ -76,7 +76,7 @@
         /* --- [수정/추가된 교수님 카드 스타일] --- */
         /* 내용이 길어져도 사진이 상단에 유지되도록 align-items: flex-start 적용 */
         .prof-card { display: flex; gap: 40px; align-items: flex-start; background: white; padding: 40px; border-radius: 16px; border: 1px solid #eaeaea; }
-        .prof-card .member-photo { width: 220px; height: 220px; margin: 0; border-radius: 16px; flex-shrink: 0;}
+        .prof-card .member-photo { width: 400px; height: 600px; margin: 0; border-radius: 16px; flex-shrink: 0;}
         .prof-details { text-align: left; flex-grow: 1; }
         .prof-details .member-name { font-size: 2rem; margin-bottom: 4px; }
         
@@ -193,10 +193,9 @@
     <div class="sub-nav">
         <div class="container sub-nav-links">
             <a href="#professor">Professor</a>
-            <a href="#phd">Ph.D.</a>
-            <a href="#ms">M.S.</a>
+            <a href="#graduates">Graduates</a>
             <a href="#undergrad">Undergraduates</a>
-            <a href="#alumni">Alumni</a>
+            <!-- <a href="#alumni">Alumni</a> -->
         </div>
     </div>
 
@@ -210,7 +209,7 @@
     <section id="professor" class="container">
         <h2 class="section-title">Principal Investigator</h2>
         <div class="prof-card">
-            <img src="https://placehold.co/400x400/2563eb/ffffff?text=Prof" alt="Professor" class="member-photo">
+            <img src="img/members/kwkim_full.jpg" alt="Professor" class="member-photo">
             <div class="prof-details">
                 <h3 class="member-name">김경원 (Kyung-Won Kim)</h3>
                 <p class="member-role" style="font-size: 1rem;">Assistant Professor<br>
@@ -224,11 +223,11 @@
                     <ul class="prof-info-list">
                         <li>
                             <div class="prof-info-year">2025 - Present</div>
-                            <div class="prof-info-desc"><strong>Assistant Professor</strong>, Incheon National University</div>
+                            <div class="prof-info-desc"><strong>Assistant Professor</strong><br>Incheon National University</div>
                         </li>
                         <li>
                             <div class="prof-info-year">2015 - 2025</div>
-                            <div class="prof-info-desc"><strong>Principal Researcher</strong>, Electronics and Telecommunications Research Institute (ETRI)</div>
+                            <div class="prof-info-desc"><strong>Principal Researcher</strong><br>Electronics and Telecommunications Research Institute (ETRI)</div>
                         </li>
                     </ul>
                 </div>
@@ -239,11 +238,11 @@
                     <ul class="prof-info-list">
                         <li>
                             <div class="prof-info-year">2009 - 2015</div>
-                            <div class="prof-info-desc"><strong>Ph.D. in Computer and Radio Communications Engineering</strong>, Korea University</div>
+                            <div class="prof-info-desc"><strong>Ph.D. in Computer and Radio Communications Engineering</strong><br>Korea University</div>
                         </li>
                         <li>
                             <div class="prof-info-year">2005 - 2009</div>
-                            <div class="prof-info-desc"><strong>B.S. in Electrical Engineering</strong>, Korea University</div>
+                            <div class="prof-info-desc"><strong>B.S. in Electrical Engineering</strong><br>Korea University</div>
                         </li>
                     </ul>
                 </div>
@@ -254,27 +253,27 @@
                     <ul class="prof-info-list">
                         <li>
                             <div class="prof-info-year">2025</div>
-                            <div class="prof-info-desc"><strong>Outstanding Researcher Award</strong>, Electronics and Telecommunications Research Institute</div>
+                            <div class="prof-info-desc"><strong>Outstanding Researcher Award</strong><br>Electronics and Telecommunications Research Institute</div>
                         </li>
                         <li>
                             <div class="prof-info-year">2025</div>
-                            <div class="prof-info-desc"><strong>Top Cited Article</strong>, IET Microwaves, Antennas & Propagation</div>
+                            <div class="prof-info-desc"><strong>Top Cited Article</strong><br>IET Microwaves, Antennas & Propagation</div>
                         </li>
                         <li>
                             <div class="prof-info-year">2024</div>
-                            <div class="prof-info-desc"><strong>Best Paper Award</strong>, Joint Conference on Communications and Information (JCCI)</div>
+                            <div class="prof-info-desc"><strong>Best Paper Award</strong><br>Joint Conference on Communications and Information (JCCI)</div>
                         </li>
                         <li>
                             <div class="prof-info-year">2022</div>
-                            <div class="prof-info-desc"><strong>Best Paper Award</strong>, ETRI Journal</div>
+                            <div class="prof-info-desc"><strong>Best Paper Award</strong><br>ETRI Journal</div>
                         </li>
                         <li>
                             <div class="prof-info-year">2021</div>
-                            <div class="prof-info-desc"><strong>Featured Article</strong>, ETRI Journal</div>
+                            <div class="prof-info-desc"><strong>Featured Article</strong><br>ETRI Journal</div>
                         </li>
                         <li>
                             <div class="prof-info-year">2020</div>
-                            <div class="prof-info-desc"><strong>Featured Article</strong>, ETRI Journal</div>
+                            <div class="prof-info-desc"><strong>Featured Article</strong><br>ETRI Journal</div>
                         </li>
                     </ul>
                 </div>
@@ -284,42 +283,16 @@
     </section>
     <!-- -------------------------- -->
 
-    <section id="phd" class="container">
-        <h2 class="section-title">Ph.D.</h2>
+    <section id="graduates" class="container">
+        <h2 class="section-title">Graduate Students</h2>
         <div class="members-grid">
             <div class="member-card">
-                <img src="https://placehold.co/200x200/e5e7eb/6b7280?text=PHD" alt="Student" class="member-photo">
-                <h3 class="member-name">이박사</h3>
-                <p class="member-role">Ph.D. Candidate</p>
-                <p class="member-info">Generative AI, Diffusion Models</p>
-                <p class="member-email">lee.phd@univ.ac.kr</p>
-            </div>
-            <div class="member-card">
-                <img src="https://placehold.co/200x200/e5e7eb/6b7280?text=PHD" alt="Student" class="member-photo">
-                <h3 class="member-name">박연구</h3>
-                <p class="member-role">Ph.D. Student</p>
-                <p class="member-info">Federated Learning</p>
-                <p class="member-email">park.r@univ.ac.kr</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="ms" class="container">
-        <h2 class="section-title">M.S.</h2>
-        <div class="members-grid">
-            <div class="member-card">
-                <img src="https://placehold.co/200x200/e5e7eb/6b7280?text=MS" alt="Student" class="member-photo">
-                <h3 class="member-name">최석사</h3>
-                <p class="member-role">M.S. Student</p>
-                <p class="member-info">Human-AI Interaction</p>
-                <p class="member-email">choi.ms@univ.ac.kr</p>
-            </div>
-            <div class="member-card">
-                <img src="https://placehold.co/200x200/e5e7eb/6b7280?text=MS" alt="Student" class="member-photo">
-                <h3 class="member-name">정코딩</h3>
-                <p class="member-role">M.S. Student</p>
-                <p class="member-info">3D Vision</p>
-                <p class="member-email">jung.c@univ.ac.kr</p>
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-5 -5 34 34' fill='%239ca3af'><path d='M9 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm11-4V7h-2v3h-3v2h3v3h2v-3h3v-2h-3z'/></svg>" 
+         alt="Recruiting" class="member-photo">
+                <h3 class="member-name">We are recruiting!</h3>
+                <p class="member-role">Graduate Students</p>
+                <p class="member-info">Passionate researchers welcome</p>
+                <!-- <p class="member-email">Passionate researchers welcome</p> -->
             </div>
         </div>
     </section>
@@ -328,14 +301,50 @@
         <h2 class="section-title">Undergraduate Researcher</h2>
         <div class="members-grid">
             <div class="member-card">
-                <h3 class="member-name">윤학생</h3>
+                <!-- <img src="img/members/test.png" alt="Students" class="member-photo" style="object-position: center 0%;"> -->
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-5 -5 34 34' fill='%239ca3af'><path d='M9 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm11-4V7h-2v3h-3v2h3v3h2v-3h3v-2h-3z'/></svg>" 
+                     alt="Recruiting" class="member-photo">
+                <h3 class="member-name">이채원 / English Name</h3>
                 <p class="member-role">Undergraduate</p>
-                <p class="member-info">B.S. in Computer Science</p>
+                <p class="member-info">Department of Information and Telecommunication Engineering, Incheon National University</p>
+                <p class="member-email">c.ongsim3@inu.ac.kr</p>
             </div>
+            <div class="member-card">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-5 -5 34 34' fill='%239ca3af'><path d='M9 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm11-4V7h-2v3h-3v2h3v3h2v-3h3v-2h-3z'/></svg>" 
+                     alt="Recruiting" class="member-photo">
+                <h3 class="member-name">우윤식 / English Name</h3>
+                <p class="member-role">Undergraduate</p>
+                <p class="member-info">Department of Information and Telecommunication Engineering, Incheon National University</p>
+                <!-- <p class="member-email">c.ongsim3@inu.ac.kr</p> -->
+            </div>
+            <div class="member-card">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-5 -5 34 34' fill='%239ca3af'><path d='M9 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm11-4V7h-2v3h-3v2h3v3h2v-3h3v-2h-3z'/></svg>" 
+                     alt="Recruiting" class="member-photo">
+                <h3 class="member-name">전민경 / English Name</h3>
+                <p class="member-role">Undergraduate</p>
+                <p class="member-info">Department of Information and Telecommunication Engineering, Incheon National University</p>
+                <!-- <p class="member-email">c.ongsim3@inu.ac.kr</p> -->
+            </div>
+            <div class="member-card">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-5 -5 34 34' fill='%239ca3af'><path d='M9 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm11-4V7h-2v3h-3v2h3v3h2v-3h3v-2h-3z'/></svg>" 
+                     alt="Recruiting" class="member-photo">
+                <h3 class="member-name">장호준 / English Name</h3>
+                <p class="member-role">Undergraduate</p>
+                <p class="member-info">Department of Information and Telecommunication Engineering, Incheon National University</p>
+                <!-- <p class="member-email">c.ongsim3@inu.ac.kr</p> -->
+            </div>
+            <!-- <div class="member-card">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-5 -5 34 34' fill='%239ca3af'><path d='M9 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm11-4V7h-2v3h-3v2h3v3h2v-3h3v-2h-3z'/></svg>" 
+                     alt="Recruiting" class="member-photo">
+                <h3 class="member-name">안혜원 / English Name</h3>
+                <p class="member-role">Undergraduate</p>
+                <p class="member-info">Department of Information and Telecommunication Engineering, Incheon National University</p>
+                <!-- <p class="member-email">c.ongsim3@inu.ac.kr</p> -->
+            </div> -->
         </div>
     </section>
 
-    <section id="alumni" class="container">
+    <!-- <section id="alumni" class="container">
         <h2 class="section-title">Alumni</h2>
         <div class="members-grid">
             <div class="member-card" style="padding: 16px;">
@@ -343,7 +352,7 @@
                 <p class="member-info">Current: AI Engineer at Naver</p>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <footer>
         <div class="container">
