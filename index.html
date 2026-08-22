@@ -95,12 +95,65 @@
 
         /* 히어로(메인) 섹션 */
         .hero {
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             align-items: center;
-            background: linear-gradient(135deg, #f3f4f6 0%, #ffffff 100%);
+            position: relative;
+            overflow: hidden;
             padding-top: var(--header-height);
+            background-color: #ffffff;
+
+            /* 1. 은은한 40px 공학 격자(Grid) 패턴 베이스 */
+            background-image: 
+                linear-gradient(to right, rgba(0, 0, 0, 0.035) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 0, 0, 0.035) 1px, transparent 1px);
+            background-size: 40px 40px;
         }
+
+        /* 2. 그리드가 텍스트 쪽(왼쪽)으로 올수록 자연스럽게 페이드아웃 */
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 75% 50%, transparent 10%, rgba(255, 255, 255, 0.85) 60%, #ffffff 90%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* 3. 직접 넣으실 배경 그래픽 전용 컨테이너 */
+        .hero-custom-graphic {
+            position: absolute;
+            bottom: 5%;
+            right: 4%;                     /* 우측 배치 위치 */
+            transform: translateY(-50%);
+            width: 1100px;                  /* 그래픽 기본 너비 */
+            max-width: 75vw;
+            height: auto;
+            pointer-events: none;         /* 텍스트 드래그 및 버튼 클릭 방해 방지 */
+            z-index: 1;
+            
+            /* ⭐️ 진하기(농도) 조절: 0.08 ~ 0.2 사이로 취향에 맞게 조절하세요 */
+            opacity: 0.08; 
+            
+            /* (선택사항) 만약 검정 단색 SVG라면 아래 주석을 풀어 파란 톤으로 바꿀 수도 있습니다 */
+            /* filter: invert(32%) sepia(90%) saturate(2000%) hue-rotate(210deg); */
+        }
+
+        /* SVG 또는 이미지 크기 자동 핏 */
+        .hero-custom-graphic svg,
+        .hero-custom-graphic img {
+            width: 100%;
+            height: auto;
+            display: block;
+            mix-blend-mode: multiply; /* 흰색 배경을 투명하게 처리 */
+        }
+
+        /* 4. 텍스트가 그래픽 위로 또렷하게 올라오도록 설정 */
+        .hero .container {
+            position: relative;
+            z-index: 2;
+        }
+
         .hero h1 {
             font-size: 3.5rem;
             font-weight: 800;
@@ -234,6 +287,7 @@
             .prof-details { text-align: left; width: 100%; }
             .prof-info-list li { flex-direction: column; gap: 2px; margin-bottom: 16px; }
             .prof-info-year { width: auto; color: var(--accent-color); font-size: 0.85rem; }
+
             /* 🚨 1. 글자가 화면을 뚫고 나가지 않도록 자동 줄바꿈 강제 적용 */
             * {
                 word-break: keep-all;
@@ -283,6 +337,10 @@
 
     <!-- 히어로 -->
     <section class="hero" id="about">
+        <div class="hero-custom-graphic">
+            <img src="img/test.jpeg" alt="배경 그래픽">
+        </div>
+
         <div class="container">
             <h1>지능형 무선 정보 시스템 연구실<br>Intelligent Radio & Information Systems Laboratory</h1>
             <p>IRIS 연구실은 전파가 물리적 공간에서 어떻게 전달되고 상호작용하는지 탐구합니다. 
